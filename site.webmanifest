@@ -1,0 +1,20 @@
+{
+ "name": "Kaleidoscope Folk & Culture",
+ "short_name": "Kaleidoscope",
+ "start_url": "/",
+ "display": "browser",
+ "background_color": "#F6EEDC",
+ "theme_color": "#7B1E30",
+ "icons": [
+  {
+   "src": "img/icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "img/icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  }
+ ]
+}
