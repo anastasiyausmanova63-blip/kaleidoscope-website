@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
-<title>Prices · Folk Dance Club Kaleidoscope</title><link href="img/favicon.ico" rel="icon" sizes="any"/><link href="img/icon-32.png" rel="icon" sizes="32x32" type="image/png"/><link href="img/icon-192.png" rel="icon" sizes="192x192" type="image/png"/><link href="img/icon-180.png" rel="apple-touch-icon"/><link rel="icon" type="image/png" sizes="48x48" href="img/icon-48.png"><link rel="icon" type="image/png" sizes="96x96" href="img/icon-96.png"><link rel="manifest" href="site.webmanifest"><meta name="theme-color" content="#7B1E30">
+<title>Prices · Folk Dance Club Kaleidoscope</title><link href="img/favicon.ico" rel="icon" sizes="any"/><link href="img/icon-32.png" rel="icon" sizes="32x32" type="image/png"/><link href="img/icon-192.png" rel="icon" sizes="192x192" type="image/png"/><link href="img/icon-180.png" rel="apple-touch-icon"/><link href="img/icon-48.png" rel="icon" sizes="48x48" type="image/png"/><link href="img/icon-96.png" rel="icon" sizes="96x96" type="image/png"/><link href="site.webmanifest" rel="manifest"/><meta content="#7B1E30" name="theme-color"/>
 <meta content="cover" name="claude:viewport-fit-sides"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Prata&amp;family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&amp;display=swap" rel="stylesheet"/>
 <style>
@@ -324,6 +324,7 @@ html.lb-on{overflow:hidden}
 .archive summary::after{content:"+";font-family:var(--body);font-size:1.4rem;color:var(--gold);line-height:1}
 .archive details[open] summary::after{content:"–"}
 .archive .months{padding:0 20px 18px;display:grid;gap:14px}
+.archive [hidden]{display:none!important}
 .arch-gal{justify-self:start;font-weight:700;color:var(--accent-c);text-decoration-color:var(--gold);text-underline-offset:3px}
 .archive h4{margin:0 0 4px;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700}
 .archive ul{margin:0;padding:0;list-style:none;display:grid;gap:4px}
@@ -628,6 +629,21 @@ html[lang=ru] .trial-badge{width:100px;height:100px;font-size:.98rem;letter-spac
   });
   var yr=ul.closest(".yr"); if(!left && yr) yr.hidden=true;
  });
+ var ru=document.documentElement.lang==="ru";
+ function pl(n){ if(!ru) return n+" performances & events"; var a=n%10,b=n%100;
+  return n+" "+(a===1&&b!==11?"выступление":(a>=2&&a<=4&&(b<12||b>14)?"выступления":"выступлений"))+" и событий"; }
+ var arch=document.querySelector(".archive");
+ if(arch){
+  arch.querySelectorAll("li[data-after]").forEach(function(li){ li.hidden=!(+li.getAttribute("data-after").replace(/-/g,"")<today); });
+  var first=null;
+  arch.querySelectorAll("details[data-year]").forEach(function(dt){
+   dt.querySelectorAll(".months > div").forEach(function(m){ m.hidden=!m.querySelector("li:not([hidden])"); });
+   var n=dt.querySelectorAll(".months > div:not([hidden]) li:not([hidden])").length;
+   dt.hidden=!n; var s=dt.querySelector(".arch-n"); if(s) s.textContent=pl(n);
+   if(n&&!first) first=dt;
+  });
+  if(first&&!first.open){ arch.querySelectorAll("details[data-year][open]").forEach(function(d){d.open=false;}); first.open=true; }
+ }
  document.querySelectorAll("[data-auto-wrap]").forEach(function(w){
   var any=[].some.call(w.querySelectorAll("ul[data-auto] li[data-date]"),function(li){return !li.hidden;});
   var e=w.querySelector(".up-empty"); if(e) e.hidden=any;
